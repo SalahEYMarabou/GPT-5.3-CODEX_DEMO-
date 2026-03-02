@@ -1,0 +1,45 @@
+<section>
+  <h1>Weekly Timesheet</h1>
+
+  <div class="actions">
+    <label>Week Start</label>
+    <input
+      type="date"
+      [ngModel]="weekStart()"
+      (ngModelChange)="weekStart.set($event); loadWeek()"
+    />
+    <button class="submit" (click)="submit()" [disabled]="isSubmitting()">
+      {{ isSubmitting() ? "Submitting..." : "Submit Weekly Timesheet" }}
+    </button>
+  </div>
+
+  <div class="counter" *ngIf="wfhCounter() as counter">
+    <span>WFH Counter</span>
+    <strong>{{ counter.wfhCount }} / {{ counter.max }}</strong>
+  </div>
+
+  <p class="warning" *ngIf="warning()">{{ warning() }}</p>
+  <p class="success" *ngIf="success()">{{ success() }}</p>
+
+  <div class="grid">
+    <div class="cell" *ngFor="let day of days()">
+      <strong class="date">{{ day.date }}</strong>
+      <select
+        [ngModel]="day.status"
+        (ngModelChange)="updateStatus(day.date, $event)"
+      >
+        <option value="onsite">On-Site</option>
+        <option value="wfh">WFH</option>
+        <option value="leave">Leave</option>
+      </select>
+      <span
+        class="chip"
+        [class.onsite]="day.status === 'onsite'"
+        [class.wfh]="day.status === 'wfh'"
+        [class.leave]="day.status === 'leave'"
+      >
+        {{ day.status }}
+      </span>
+    </div>
+  </div>
+</section>

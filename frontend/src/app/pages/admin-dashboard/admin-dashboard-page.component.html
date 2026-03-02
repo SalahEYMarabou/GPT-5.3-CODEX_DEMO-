@@ -1,0 +1,52 @@
+<section>
+  <h1>Admin Dashboard</h1>
+
+  <div class="kpis" *ngIf="metrics() as m">
+    <article>API Calls: {{ m.apiCalls }}</article>
+    <article>Validation ms: {{ m.avgValidationMs }}</article>
+    <article>Submissions/week: {{ m.submissionsThisWeek }}</article>
+    <article>Violations/week: {{ m.violationsThisWeek }}</article>
+  </div>
+
+  <div class="filters-row">
+    <input type="date" [ngModel]="from()" (ngModelChange)="from.set($event)" />
+    <input type="date" [ngModel]="to()" (ngModelChange)="to.set($event)" />
+    <button (click)="load()">Apply</button>
+    <button class="csv" (click)="exportCsv()">Export CSV</button>
+    <button class="pdf" (click)="exportPdf()">Export PDF</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Employee</th>
+        <th>On-Site</th>
+        <th>WFH</th>
+        <th>Leave</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of rows()">
+        <td>{{ row.employee }}</td>
+        <td>{{ row.onsite }}</td>
+        <td>{{ row.wfh }}</td>
+        <td>{{ row.leave }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Daily Rule Compliance</h3>
+  <div
+    class="day"
+    *ngFor="let day of dailySummaries()"
+    [class.fail]="day.violations?.length"
+  >
+    <strong>{{ day.date }}</strong>
+    <span>On-Site: {{ day.onsiteCount }}</span>
+    <span>WFH: {{ day.wfhCount }}</span>
+    <span>Leave: {{ day.leaveCount }}</span>
+    <span *ngIf="day.violations?.length"
+      >Violation: {{ day.violations[0].code }}</span
+    >
+  </div>
+</section>

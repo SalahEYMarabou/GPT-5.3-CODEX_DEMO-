@@ -1,0 +1,1 @@
+window.CLERK_PUBLISHABLE_KEY = window.CLERK_PUBLISHABLE_KEY || "";

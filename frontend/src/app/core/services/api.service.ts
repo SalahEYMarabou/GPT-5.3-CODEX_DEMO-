@@ -1,0 +1,55 @@
+import { Injectable } from "@angular/core";
+import { AuthService } from "./auth.service";
+
+@Injectable({ providedIn: "root" })
+export class ApiService {
+  private readonly baseUrl = "http://localhost:3000/api";
+
+  constructor(private readonly authService: AuthService) {}
+
+  async get<T>(path: string): Promise<T> {
+    const headers = await this.authService.getAuthHeaders();
+    const response = await fetch(`${this.baseUrl}${path}`, { headers });
+    if (!response.ok) {
+      throw await response.json();
+    }
+    return (await response.json()) as T;
+  }
+
+  async post<T>(path: string, payload: unknown): Promise<T> {
+    const headers = await this.authService.getAuthHeaders();
+    const response = await fetch(`${this.baseUrl}${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw await response.json();
+    }
+
+    return (await response.json()) as T;
+  }
+
+  async download(path: string): Promise<void> {
+    const headers = await this.authService.getAuthHeaders();
+    const response = await fetch(`${this.baseUrl}${path}`, { headers });
+    if (!response.ok) {
+      throw await response.json();
+    }
+
+    const blob = await response.blob();
+    const disposition = response.headers.get("Content-Disposition") || "";
+    const filename =
+      disposition.split("filename=")[1]?.replace(/\"/g, "") || "report";
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+}

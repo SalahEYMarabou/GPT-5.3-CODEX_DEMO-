@@ -1,0 +1,19 @@
+<section>
+  <h1>Reports</h1>
+
+  <div class="toolbar">
+    <input type="date" [ngModel]="from()" (ngModelChange)="from.set($event)" />
+    <input type="date" [ngModel]="to()" (ngModelChange)="to.set($event)" />
+    <button (click)="load()">Refresh</button>
+    <button class="csv" (click)="downloadCsv()">Export CSV</button>
+    <button class="pdf" (click)="downloadPdf()">Export PDF</button>
+  </div>
+
+  <div class="summary" *ngFor="let day of summaries()">
+    <strong class="date">{{ day.date }}</strong>
+    <span><b>On-Site:</b> {{ day.onsiteCount }}</span>
+    <span><b>WFH:</b> {{ day.wfhCount }}</span>
+    <span><b>Leave:</b> {{ day.leaveCount }}</span>
+    <span><b>Violations:</b> {{ day.violations.length }}</span>
+  </div>
+</section>

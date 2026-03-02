@@ -1,0 +1,20 @@
+<section *ngIf="metrics() as m">
+  <h1>Metrics</h1>
+
+  <div class="cards">
+    <article>API Calls: {{ m.apiCalls }}</article>
+    <article>Avg Validation Time: {{ m.avgValidationMs }} ms</article>
+    <article>Total Submissions: {{ m.totalSubmissions }}</article>
+    <article>Current Week: {{ m.currentWeek }}</article>
+  </div>
+
+  <div class="panel">
+    <h3>Submissions by Week</h3>
+    <pre>{{ m.submissionsByWeek | json }}</pre>
+  </div>
+
+  <div class="panel">
+    <h3>Violations by Week</h3>
+    <pre>{{ m.violationsByWeek | json }}</pre>
+  </div>
+</section>

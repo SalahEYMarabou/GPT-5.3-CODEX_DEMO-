@@ -1,0 +1,91 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f3f6fb;
+  --surface: #ffffff;
+  --surface-soft: #f8fafd;
+  --text: #0f172a;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  --line-strong: #d6deea;
+  --brand: #f5c84c;
+  --brand-dark: #eab308;
+  --success: #16a34a;
+  --info: #2563eb;
+  --warn: #f97316;
+  --shadow-soft: 0 10px 26px rgba(15, 23, 42, 0.06);
+  --shadow-hover: 0 14px 32px rgba(15, 23, 42, 0.1);
+}
+
+body {
+  margin: 0;
+  font-family:
+    Inter,
+    Segoe UI,
+    Arial,
+    sans-serif;
+  background: radial-gradient(
+    circle at 8% 0%,
+    #fff8df 0%,
+    var(--bg) 35%,
+    #edf2fb 100%
+  );
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+input,
+select {
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  padding: 0.56rem 0.7rem;
+  background: var(--surface);
+  color: var(--text);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: rgba(234, 179, 8, 0.6);
+  box-shadow: 0 0 0 4px rgba(245, 200, 76, 0.2);
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 0.56rem 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+
+button:hover {
+  filter: brightness(0.99);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
+table tbody tr:hover {
+  background: #f8fafc;
+}

@@ -1,0 +1,72 @@
+.sign-in-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  background: radial-gradient(
+    circle at top right,
+    #fff4cc 0%,
+    #f6f8fd 38%,
+    #eef3fc 100%
+  );
+  color: #222;
+
+  h1 {
+    margin: 0;
+    font-size: 1.7rem;
+    letter-spacing: -0.02em;
+  }
+}
+
+.mock-card {
+  width: min(100%, 430px);
+  border: 1px solid #e4eaf3;
+  border-radius: 16px;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 20px 44px rgba(15, 23, 42, 0.12);
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  input {
+    border: 1px solid #d6deea;
+    border-radius: 10px;
+    padding: 0.55rem 0.7rem;
+  }
+
+  .hint {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.82rem;
+  }
+
+  .error {
+    margin: 0;
+    color: #b91c1c;
+    font-size: 0.9rem;
+  }
+
+  button {
+    background: linear-gradient(180deg, #f8d676 0%, #f5c84c 100%);
+    border-radius: 12px;
+    padding: 0.62rem 0.95rem;
+    cursor: pointer;
+    font-weight: 700;
+  }
+}
+
+.clerk-mount {
+  min-width: 320px;
+}

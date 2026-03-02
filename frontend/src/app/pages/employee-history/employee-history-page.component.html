@@ -1,0 +1,45 @@
+<section>
+  <h1>History</h1>
+
+  <div class="filters">
+    <select [ngModel]="mode()" (ngModelChange)="mode.set($event)">
+      <option value="weekly">Weekly</option>
+      <option value="monthly">Monthly</option>
+    </select>
+    <input type="date" [ngModel]="from()" (ngModelChange)="from.set($event)" />
+    <input type="date" [ngModel]="to()" (ngModelChange)="to.set($event)" />
+    <button (click)="load()">Load</button>
+  </div>
+
+  <div class="empty" *ngIf="!historyGroups().length">
+    No history found for this date range.
+  </div>
+
+  <div class="blocks" *ngFor="let group of historyGroups()">
+    <h3>{{ mode() === "weekly" ? "Week" : "Month" }}: {{ group.period }}</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of group.entries">
+          <td>{{ row.date }}</td>
+          <td>
+            <span
+              class="chip"
+              [class.onsite]="row.status === 'onsite'"
+              [class.wfh]="row.status === 'wfh'"
+              [class.leave]="row.status === 'leave'"
+            >
+              {{ row.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

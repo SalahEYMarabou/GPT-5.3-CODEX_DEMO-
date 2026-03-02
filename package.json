@@ -1,0 +1,14 @@
+{
+  "name": "timesheet-webapp",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev:frontend": "npm run start --workspace frontend",
+    "dev:backend": "npm run start:dev --workspace backend",
+    "seed": "npm run seed --workspace backend"
+  }
+}

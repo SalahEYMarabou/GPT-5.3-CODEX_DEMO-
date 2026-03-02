@@ -1,0 +1,33 @@
+{
+  "name": "timesheet-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "build": "nest build",
+    "seed": "ts-node scripts/seed.ts"
+  },
+  "dependencies": {
+    "@clerk/backend": "^1.22.0",
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/core": "^11.0.1",
+    "@nestjs/platform-express": "^11.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "pdfkit": "^0.15.2",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.0.1",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "@types/pdfkit": "^0.13.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

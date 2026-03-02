@@ -1,0 +1,99 @@
+.filters,
+.blocks {
+  border: 1px solid #e6ecf4;
+  border-radius: 14px;
+  background: #fff;
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.filters {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.85rem;
+}
+
+button {
+  background: linear-gradient(180deg, #f8d676 0%, #f5c84c 100%);
+  padding: 0.56rem 0.95rem;
+  font-weight: 700;
+}
+
+.blocks {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+
+  h3 {
+    margin: 0 0 0.55rem;
+    color: #334155;
+  }
+}
+
+.empty {
+  border: 1px dashed #cbd5e1;
+  background: #f8fafc;
+  color: #64748b;
+  border-radius: 14px;
+  padding: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e7edf5;
+  border-radius: 12px;
+  overflow: hidden;
+
+  th,
+  td {
+    padding: 0.65rem;
+    text-align: left;
+    border-bottom: 1px solid #edf2f7;
+  }
+
+  th {
+    background: #f8fafc;
+    color: #475569;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+}
+
+.chip {
+  border-radius: 999px;
+  color: #fff;
+  padding: 0.25rem 0.55rem;
+  display: inline-flex;
+  font-size: 0.78rem;
+  text-transform: capitalize;
+  font-weight: 700;
+}
+
+.chip.onsite {
+  background: #16a34a;
+}
+
+.chip.wfh {
+  background: #2563eb;
+}
+
+.chip.leave {
+  background: #f97316;
+}
+
+@media (max-width: 760px) {
+  .filters {
+    flex-wrap: wrap;
+  }
+}

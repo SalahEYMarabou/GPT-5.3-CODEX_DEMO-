@@ -1,0 +1,26 @@
+<section class="sign-in-wrap">
+  <h1>Sign In</h1>
+
+  <div *ngIf="authService.isMockMode(); else clerkUi" class="mock-card">
+    <label>
+      Username
+      <input [(ngModel)]="username" placeholder="employee1@example.com" />
+    </label>
+    <label>
+      Password
+      <input
+        [(ngModel)]="password"
+        type="password"
+        placeholder="Employee@123"
+      />
+    </label>
+    <p class="hint">Admin users: employee1@example.com / Admin@123</p>
+    <p class="hint">Employee users: employee3@example.com / Employee@123</p>
+    <p class="error" *ngIf="error">{{ error }}</p>
+    <button (click)="loginMock()">Sign In</button>
+  </div>
+
+  <ng-template #clerkUi>
+    <div #clerkMount class="clerk-mount"></div>
+  </ng-template>
+</section>
