@@ -1,26 +1,37 @@
 <section class="sign-in-wrap">
-  <h1>Sign In</h1>
+  <div class="bg-orb orb-one" aria-hidden="true"></div>
+  <div class="bg-orb orb-two" aria-hidden="true"></div>
 
-  <div *ngIf="authService.isMockMode(); else clerkUi" class="mock-card">
-    <label>
-      Username
-      <input [(ngModel)]="username" placeholder="employee1@example.com" />
-    </label>
-    <label>
-      Password
-      <input
-        [(ngModel)]="password"
-        type="password"
-        placeholder="Employee@123"
-      />
-    </label>
-    <p class="hint">Admin users: employee1@example.com / Admin@123</p>
-    <p class="hint">Employee users: employee3@example.com / Employee@123</p>
-    <p class="error" *ngIf="error">{{ error }}</p>
-    <button (click)="loginMock()">Sign In</button>
+  <div class="sign-in-shell">
+    <header class="sign-in-head">
+      <span class="brand-mark" aria-hidden="true">TS</span>
+      <h1 class="page-title">
+        <span class="title-icon" aria-hidden="true">🔐</span>Sign In
+      </h1>
+      <p>Welcome back. Access your timesheet workspace securely.</p>
+    </header>
+
+    <div *ngIf="authService.isMockMode(); else clerkUi" class="mock-card">
+      <label>
+        Username
+        <input [(ngModel)]="username" placeholder="employee1@example.com" />
+      </label>
+      <label>
+        Password
+        <input
+          [(ngModel)]="password"
+          type="password"
+          placeholder="Employee@123"
+        />
+      </label>
+      <p class="hint">Admin users: employee1@example.com / Admin@123</p>
+      <p class="hint">Employee users: employee3@example.com / Employee@123</p>
+      <p class="error" *ngIf="error">{{ error }}</p>
+      <button (click)="loginMock()">Sign In</button>
+    </div>
+
+    <ng-template #clerkUi>
+      <div #clerkMount class="clerk-mount"></div>
+    </ng-template>
   </div>
-
-  <ng-template #clerkUi>
-    <div #clerkMount class="clerk-mount"></div>
-  </ng-template>
 </section>

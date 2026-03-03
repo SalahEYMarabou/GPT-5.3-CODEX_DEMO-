@@ -1,35 +1,104 @@
 .sign-in-wrap {
+  position: relative;
+  overflow: hidden;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  place-items: center;
   align-items: center;
   justify-content: center;
-  gap: 1.1rem;
+  padding: 1.2rem;
   background: radial-gradient(
     circle at top right,
     #fff4cc 0%,
     #f6f8fd 38%,
     #eef3fc 100%
   );
-  color: #222;
+  color: var(--text);
 
-  h1 {
+  .page-title {
     margin: 0;
-    font-size: 1.7rem;
-    letter-spacing: -0.02em;
   }
 }
 
+.bg-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(2px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat 2s ease-in-out infinite;
+}
+
+.orb-one {
+  width: 280px;
+  height: 280px;
+  top: -60px;
+  left: -40px;
+  background: color-mix(in srgb, var(--brand) 30%, white);
+}
+
+.orb-two {
+  width: 220px;
+  height: 220px;
+  right: -30px;
+  bottom: -40px;
+  background: color-mix(in srgb, var(--text) 68%, white);
+  animation-delay: 0.8s;
+}
+
+.sign-in-shell {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 460px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 24px 54px rgba(15, 23, 42, 0.16);
+  backdrop-filter: blur(8px);
+  padding: 1.1rem;
+  animation: cardEntrance 420ms ease-out;
+}
+
+.sign-in-head {
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+
+  p {
+    margin: 0;
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 0.93rem;
+  }
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #1f2937;
+  background: linear-gradient(180deg, #f8d676 0%, #f5c84c 100%);
+  box-shadow: 0 8px 16px rgba(245, 200, 76, 0.32);
+  animation: pulseGlow 2.8s ease-in-out infinite;
+}
+
 .mock-card {
-  width: min(100%, 430px);
-  border: 1px solid #e4eaf3;
-  border-radius: 16px;
-  padding: 1.25rem;
-  background: rgba(255, 255, 255, 0.95);
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.95rem;
+  background: var(--surface);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  box-shadow: 0 20px 44px rgba(15, 23, 42, 0.12);
+
+  animation: fadeUp 480ms ease-out;
 
   label {
     display: flex;
@@ -37,18 +106,26 @@
     gap: 0.3rem;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #334155;
+    color: var(--text);
   }
 
   input {
-    border: 1px solid #d6deea;
+    border: 1px solid var(--line-strong);
     border-radius: 10px;
     padding: 0.55rem 0.7rem;
+    transition:
+      box-shadow 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
+
+    &:focus {
+      transform: translateY(-1px);
+    }
   }
 
   .hint {
     margin: 0;
-    color: #64748b;
+    color: var(--muted);
     font-size: 0.82rem;
   }
 
@@ -56,6 +133,10 @@
     margin: 0;
     color: #b91c1c;
     font-size: 0.9rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 10px;
+    background: color-mix(in srgb, #ef4444 12%, white);
+    border: 1px solid color-mix(in srgb, #ef4444 28%, white);
   }
 
   button {
@@ -64,9 +145,77 @@
     padding: 0.62rem 0.95rem;
     cursor: pointer;
     font-weight: 700;
+    animation: fadeUp 560ms ease-out;
   }
 }
 
 .clerk-mount {
   min-width: 320px;
+  min-height: 250px;
+  border-radius: 12px;
+  animation: fadeUp 520ms ease-out;
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 8px 16px rgba(245, 200, 76, 0.28);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 11px 24px rgba(245, 200, 76, 0.4);
+  }
+}
+
+@keyframes orbFloat {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-10px) translateX(6px);
+  }
+}
+
+@media (max-width: 560px) {
+  .sign-in-shell {
+    padding: 0.9rem;
+  }
+
+  .sign-in-head p {
+    font-size: 0.88rem;
+  }
+
+  .orb-one {
+    width: 210px;
+    height: 210px;
+  }
+
+  .orb-two {
+    width: 170px;
+    height: 170px;
+  }
 }

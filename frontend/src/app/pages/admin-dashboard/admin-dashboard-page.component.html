@@ -1,52 +1,115 @@
-<section>
-  <h1>Admin Dashboard</h1>
+<section class="admin-dashboard">
+  <header class="page-header">
+    <h1 class="page-title">
+      <span class="title-icon" aria-hidden="true">🛡️</span>Admin Dashboard
+    </h1>
+    <p>Team attendance performance and rule compliance overview.</p>
+  </header>
 
   <div class="kpis" *ngIf="metrics() as m">
-    <article>API Calls: {{ m.apiCalls }}</article>
-    <article>Validation ms: {{ m.avgValidationMs }}</article>
-    <article>Submissions/week: {{ m.submissionsThisWeek }}</article>
-    <article>Violations/week: {{ m.violationsThisWeek }}</article>
+    <article class="kpi-card">
+      <span class="kpi-label">API Calls</span>
+      <strong class="kpi-value">{{ m.apiCalls }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span class="kpi-label">Avg Validation</span>
+      <strong class="kpi-value">{{ m.avgValidationMs }} ms</strong>
+    </article>
+    <article class="kpi-card">
+      <span class="kpi-label">Submissions This Week</span>
+      <strong class="kpi-value">{{ m.submissionsThisWeek }}</strong>
+    </article>
+    <article class="kpi-card">
+      <span class="kpi-label">Violations This Week</span>
+      <strong class="kpi-value">{{ m.violationsThisWeek }}</strong>
+    </article>
   </div>
 
-  <div class="filters-row">
-    <input type="date" [ngModel]="from()" (ngModelChange)="from.set($event)" />
-    <input type="date" [ngModel]="to()" (ngModelChange)="to.set($event)" />
-    <button (click)="load()">Apply</button>
-    <button class="csv" (click)="exportCsv()">Export CSV</button>
-    <button class="pdf" (click)="exportPdf()">Export PDF</button>
-  </div>
+  <section class="filters-panel">
+    <div class="date-filters">
+      <label>
+        <span>From</span>
+        <input
+          type="date"
+          [ngModel]="from()"
+          (ngModelChange)="from.set($event)"
+        />
+      </label>
+      <label>
+        <span>To</span>
+        <input type="date" [ngModel]="to()" (ngModelChange)="to.set($event)" />
+      </label>
+    </div>
+    <div class="actions">
+      <button class="apply" (click)="load()">Apply</button>
+      <button class="csv" (click)="exportCsv()">Export CSV</button>
+      <button class="pdf" (click)="exportPdf()">Export PDF</button>
+    </div>
+  </section>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Employee</th>
-        <th>On-Site</th>
-        <th>WFH</th>
-        <th>Leave</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of rows()">
-        <td>{{ row.employee }}</td>
-        <td>{{ row.onsite }}</td>
-        <td>{{ row.wfh }}</td>
-        <td>{{ row.leave }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <section class="table-card">
+    <div class="table-head">
+      <h3>Employee Status</h3>
+      <span class="table-meta">{{ rows().length }} employees</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>On-Site</th>
+          <th>WFH</th>
+          <th>Leave</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rows()">
+          <td class="employee-name">{{ row.employee }}</td>
+          <td>
+            <span class="value-chip onsite">{{ row.onsite }}</span>
+          </td>
+          <td>
+            <span class="value-chip wfh">{{ row.wfh }}</span>
+          </td>
+          <td>
+            <span class="value-chip leave">{{ row.leave }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="table-empty" *ngIf="!rows().length">
+      No employee records found for the selected date range.
+    </p>
+  </section>
 
-  <h3>Daily Rule Compliance</h3>
-  <div
-    class="day"
-    *ngFor="let day of dailySummaries()"
-    [class.fail]="day.violations?.length"
-  >
-    <strong>{{ day.date }}</strong>
-    <span>On-Site: {{ day.onsiteCount }}</span>
-    <span>WFH: {{ day.wfhCount }}</span>
-    <span>Leave: {{ day.leaveCount }}</span>
-    <span *ngIf="day.violations?.length"
-      >Violation: {{ day.violations[0].code }}</span
-    >
-  </div>
+  <section class="daily-section">
+    <h3>Daily Rule Compliance</h3>
+    <div class="daily-grid">
+      <article
+        class="day-card"
+        *ngFor="let day of dailySummaries()"
+        [class.fail]="day.violations?.length"
+      >
+        <div class="day-head">
+          <strong>{{ day.date }}</strong>
+          <span class="status-badge" *ngIf="day.violations?.length"
+            >Violation</span
+          >
+        </div>
+        <div class="day-metrics">
+          <span
+            >On-Site <strong>{{ day.onsiteCount }}</strong></span
+          >
+          <span
+            >WFH <strong>{{ day.wfhCount }}</strong></span
+          >
+          <span
+            >Leave <strong>{{ day.leaveCount }}</strong></span
+          >
+        </div>
+        <p class="violation" *ngIf="day.violations?.length">
+          Rule: {{ day.violations[0].code }}
+        </p>
+      </article>
+    </div>
+  </section>
 </section>

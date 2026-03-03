@@ -2,39 +2,48 @@
 
 <div class="app-shell" *ngIf="!isSignInRoute">
   <aside class="sidebar">
-    <h2>Timesheet</h2>
+    <div class="brand">
+      <span class="brand-logo" aria-hidden="true">TS</span>
+      <div>
+        <h2>Timesheet</h2>
+        <small>Workforce Portal</small>
+      </div>
+    </div>
+
     <a routerLink="/employee/weekly" routerLinkActive="active"
-      >Employee Weekly</a
+      ><span class="nav-icon" aria-hidden="true">📅</span>Employee Weekly</a
     >
     <a routerLink="/employee/history" routerLinkActive="active"
-      >Employee History</a
+      ><span class="nav-icon" aria-hidden="true">🕘</span>Employee History</a
     >
     <a *ngIf="isAdmin" routerLink="/admin/dashboard" routerLinkActive="active"
-      >Admin Dashboard</a
+      ><span class="nav-icon" aria-hidden="true">🛡️</span>Admin Dashboard</a
     >
     <span *ngIf="!isAdmin" class="nav-locked" title="Accès admin requis"
-      >🔒 Admin Dashboard</span
+      ><span class="nav-icon" aria-hidden="true">🔒</span>Admin Dashboard</span
     >
 
     <a *ngIf="isAdmin" routerLink="/admin/reports" routerLinkActive="active"
-      >Reports</a
+      ><span class="nav-icon" aria-hidden="true">📄</span>Reports</a
     >
     <span *ngIf="!isAdmin" class="nav-locked" title="Accès admin requis"
-      >🔒 Reports</span
+      ><span class="nav-icon" aria-hidden="true">🔒</span>Reports</span
     >
 
     <a *ngIf="isAdmin" routerLink="/admin/metrics" routerLinkActive="active"
-      >Metrics</a
+      ><span class="nav-icon" aria-hidden="true">📊</span>Metrics</a
     >
     <span *ngIf="!isAdmin" class="nav-locked" title="Accès admin requis"
-      >🔒 Metrics</span
+      ><span class="nav-icon" aria-hidden="true">🔒</span>Metrics</span
     >
   </aside>
 
   <main class="content-area">
     <header class="topbar">
       <div class="week-picker">
-        <label for="week">Week selector</label>
+        <label for="week"
+          ><span aria-hidden="true">🗓️</span> Week selector</label
+        >
         <input
           id="week"
           type="date"
@@ -45,11 +54,16 @@
 
       <div class="profile">
         <div>
-          <strong>{{ authService.currentUser()?.name }}</strong>
+          <strong
+            ><span aria-hidden="true">👤</span>
+            {{ authService.currentUser()?.name }}</strong
+          >
           <small>{{ authService.currentUser()?.email }}</small>
           <span class="role-badge">{{ authService.currentUser()?.role }}</span>
         </div>
-        <button (click)="logout()">Logout</button>
+        <button (click)="logout()">
+          <span aria-hidden="true">↩</span> Logout
+        </button>
       </div>
     </header>
 

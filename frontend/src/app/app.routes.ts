@@ -9,7 +9,7 @@ import { ReportsPageComponent } from "./pages/reports/reports-page.component";
 import { SignInPageComponent } from "./pages/sign-in/sign-in-page.component";
 
 export const routes: Routes = [
-  { path: "", redirectTo: "employee/weekly", pathMatch: "full" },
+  { path: "", redirectTo: "sign-in", pathMatch: "full" },
   { path: "sign-in", component: SignInPageComponent },
   {
     path: "employee/weekly",
@@ -36,5 +36,5 @@ export const routes: Routes = [
     component: MetricsPageComponent,
     canActivate: [adminGuard],
   },
-  { path: "**", redirectTo: "employee/weekly" },
+  { path: "**", redirectTo: "sign-in" },
 ];

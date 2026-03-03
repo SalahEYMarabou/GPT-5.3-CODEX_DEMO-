@@ -1,20 +1,99 @@
 <section *ngIf="metrics() as m">
-  <h1>Metrics</h1>
+  <h1 class="page-title">
+    <span class="title-icon" aria-hidden="true">📊</span>Metrics
+  </h1>
 
   <div class="cards">
-    <article>API Calls: {{ m.apiCalls }}</article>
-    <article>Avg Validation Time: {{ m.avgValidationMs }} ms</article>
-    <article>Total Submissions: {{ m.totalSubmissions }}</article>
-    <article>Current Week: {{ m.currentWeek }}</article>
+    <article>
+      <span class="card-label">API Calls</span>
+      <strong class="card-value">{{ m.apiCalls }}</strong>
+    </article>
+    <article>
+      <span class="card-label">Avg Validation Time</span>
+      <strong class="card-value">{{ m.avgValidationMs }} ms</strong>
+    </article>
+    <article>
+      <span class="card-label">Total Submissions</span>
+      <strong class="card-value">{{ m.totalSubmissions }}</strong>
+    </article>
+    <article>
+      <span class="card-label">Current Week</span>
+      <strong class="card-value">{{ m.currentWeek }}</strong>
+    </article>
   </div>
 
   <div class="panel">
-    <h3>Submissions by Week</h3>
-    <pre>{{ m.submissionsByWeek | json }}</pre>
+    <h3>Weekly Trend</h3>
+    <table *ngIf="combinedRows(m).length; else emptyCombined">
+      <thead>
+        <tr>
+          <th>Week</th>
+          <th>Submissions</th>
+          <th>Violations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of combinedRows(m)">
+          <td>{{ row.week }}</td>
+          <td>
+            <span class="value-chip submissions">{{ row.submissions }}</span>
+          </td>
+          <td>
+            <span class="value-chip violations">{{ row.violations }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #emptyCombined>
+      <p class="empty">No weekly trend data available yet.</p>
+    </ng-template>
   </div>
 
-  <div class="panel">
-    <h3>Violations by Week</h3>
-    <pre>{{ m.violationsByWeek | json }}</pre>
+  <div class="panel two-col">
+    <section>
+      <h3>Violations by Week</h3>
+      <table *ngIf="violationsRows(m).length; else emptyViolations">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Violations</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of violationsRows(m)">
+            <td>{{ row.week }}</td>
+            <td>
+              <span class="value-chip violations">{{ row.value }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #emptyViolations>
+        <p class="empty">No violation data available yet.</p>
+      </ng-template>
+    </section>
+
+    <section>
+      <h3>Submissions by Week</h3>
+      <table *ngIf="submissionsRows(m).length; else emptySubmissions">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Submissions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of submissionsRows(m)">
+            <td>{{ row.week }}</td>
+            <td>
+              <span class="value-chip submissions">{{ row.value }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #emptySubmissions>
+        <p class="empty">No submission data available yet.</p>
+      </ng-template>
+    </section>
   </div>
 </section>
