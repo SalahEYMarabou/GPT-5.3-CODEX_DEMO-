@@ -1,9 +1,8 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { readFile, writeFile } from "fs/promises";
-import { join } from "path";
 import { verifyToken } from "@clerk/backend";
 import { v4 as uuid } from "uuid";
 import { RequestUser } from "./request-user.interface";
+import { JsonStorageService } from "../common/json-storage.service";
 
 interface CredentialRow {
   userId: string;
@@ -30,32 +29,19 @@ interface UserRow {
 export class AuthService {
   private readonly secretKey = process.env.CLERK_SECRET_KEY;
   private readonly publishableKey = process.env.CLERK_PUBLISHABLE_KEY;
-  private readonly dataDir = join(process.cwd(), "data");
+
+  constructor(private readonly storage: JsonStorageService) {}
 
   isMockMode(): boolean {
     return !(this.secretKey && this.publishableKey);
   }
 
   private async readJson<T>(fileName: string, fallback: T): Promise<T> {
-    try {
-      const content = await readFile(join(this.dataDir, fileName), "utf8");
-      return JSON.parse(content) as T;
-    } catch {
-      await writeFile(
-        join(this.dataDir, fileName),
-        JSON.stringify(fallback, null, 2),
-        "utf8",
-      );
-      return fallback;
-    }
+    return this.storage.read<T>(fileName, fallback);
   }
 
   private async writeJson<T>(fileName: string, payload: T): Promise<void> {
-    await writeFile(
-      join(this.dataDir, fileName),
-      JSON.stringify(payload, null, 2),
-      "utf8",
-    );
+    await this.storage.write(fileName, payload);
   }
 
   async loginWithPassword(
