@@ -70,6 +70,38 @@ Set both keys in backend environment, then send Clerk bearer token from frontend
 
 See `backend/.env.example` for config.
 
+## Deploy on Vercel
+
+Deploy frontend and backend as **two separate Vercel projects** from the same repository.
+
+### Backend project (NestJS)
+
+- Root Directory: `backend`
+- Vercel config: `backend/vercel.json`
+- Runtime endpoint base: `https://<your-backend-domain>/api`
+
+Notes:
+
+- Backend uses a serverless entrypoint at `backend/api/index.ts`.
+- JSON data is writable on Vercel via `/tmp/timesheet-data` (ephemeral storage).
+- Initial data is seeded from `backend/data/*` per cold start.
+
+### Frontend project (Angular)
+
+- Root Directory: `frontend`
+- Vercel config: `frontend/vercel.json`
+- Vercel env vars:
+  - `CLERK_PUBLISHABLE_KEY=pk_...`
+  - `API_BASE_URL=https://<your-backend-domain>/api` (needed if frontend and backend are on different domains)
+
+Frontend runtime config is auto-generated during `npm run build` / `npm start` from these env vars.
+
+API base URL behavior:
+
+- Localhost: defaults to `http://localhost:3000/api`
+- Non-localhost: defaults to `/api`
+- If `API_BASE_URL` is set, it overrides defaults.
+
 ## API Endpoints
 
 - `GET /api/users`

@@ -3,9 +3,25 @@ import { AuthService } from "./auth.service";
 
 @Injectable({ providedIn: "root" })
 export class ApiService {
-  private readonly baseUrl = "http://localhost:3000/api";
+  private readonly baseUrl = this.resolveBaseUrl();
 
   constructor(private readonly authService: AuthService) {}
+
+  private resolveBaseUrl(): string {
+    const configured = (
+      window as unknown as {
+        API_BASE_URL?: string;
+      }
+    ).API_BASE_URL;
+
+    if (configured?.trim()) {
+      return configured.replace(/\/$/, "");
+    }
+
+    return window.location.hostname === "localhost"
+      ? "http://localhost:3000/api"
+      : "/api";
+  }
 
   async get<T>(path: string): Promise<T> {
     const headers = await this.authService.getAuthHeaders();

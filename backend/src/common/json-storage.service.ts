@@ -4,7 +4,11 @@ import { join } from "path";
 
 @Injectable()
 export class JsonStorageService {
-  private readonly dataDir = join(process.cwd(), "data");
+  private readonly sourceDataDir = join(process.cwd(), "data");
+  private readonly dataDir =
+    process.env.VERCEL === "1"
+      ? join("/tmp", "timesheet-data")
+      : this.sourceDataDir;
 
   private async ensureDir(): Promise<void> {
     await mkdir(this.dataDir, { recursive: true });
@@ -17,6 +21,19 @@ export class JsonStorageService {
       const content = await readFile(filePath, "utf8");
       return JSON.parse(content) as T;
     } catch {
+      if (this.dataDir !== this.sourceDataDir) {
+        try {
+          const seeded = await readFile(
+            join(this.sourceDataDir, filename),
+            "utf8",
+          );
+          await writeFile(filePath, seeded, "utf8");
+          return JSON.parse(seeded) as T;
+        } catch {
+          // Continue to fallback initialization below.
+        }
+      }
+
       await this.write(filename, fallback);
       return fallback;
     }

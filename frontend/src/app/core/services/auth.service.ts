@@ -10,6 +10,7 @@ interface LoginResponse {
 export class AuthService {
   private readonly tokenKey = "timesheet.mock.token";
   private readonly userKey = "timesheet.mock.user";
+  private readonly apiBaseUrl = this.resolveApiBaseUrl();
   private readonly publishableKey = (
     window as unknown as { CLERK_PUBLISHABLE_KEY?: string }
   ).CLERK_PUBLISHABLE_KEY;
@@ -135,6 +136,22 @@ export class AuthService {
     });
   }
 
+  private resolveApiBaseUrl(): string {
+    const configured = (
+      window as unknown as {
+        API_BASE_URL?: string;
+      }
+    ).API_BASE_URL;
+
+    if (configured?.trim()) {
+      return configured.replace(/\/$/, "");
+    }
+
+    return window.location.hostname === "localhost"
+      ? "http://localhost:3000/api"
+      : "/api";
+  }
+
   setMockRole(role: "employee" | "admin"): void {
     this.mockUser.update((user) => (user ? { ...user, role } : user));
     const updated = this.mockUser();
@@ -144,7 +161,7 @@ export class AuthService {
   }
 
   async loginWithPassword(username: string, password: string): Promise<void> {
-    const response = await fetch("http://localhost:3000/api/auth/login", {
+    const response = await fetch(`${this.apiBaseUrl}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

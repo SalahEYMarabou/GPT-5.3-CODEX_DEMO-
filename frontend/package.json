@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "ng serve --port 4200",
-    "build": "ng build"
+    "generate:runtime-config": "node scripts/generate-runtime-config.mjs",
+    "start": "npm run generate:runtime-config && ng serve --port 4200",
+    "build": "npm run generate:runtime-config && ng build"
   },
   "dependencies": {
     "@angular/animations": "^21.0.0",
