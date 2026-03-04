@@ -144,7 +144,16 @@ export class AuthService {
     ).API_BASE_URL;
 
     if (configured?.trim()) {
-      return configured.replace(/\/$/, "");
+      const normalized = configured.trim().replace(/\/$/, "");
+      if (
+        normalized.startsWith("http://") ||
+        normalized.startsWith("https://") ||
+        normalized.startsWith("/")
+      ) {
+        return normalized;
+      }
+
+      return `https://${normalized}`;
     }
 
     return window.location.hostname === "localhost"
