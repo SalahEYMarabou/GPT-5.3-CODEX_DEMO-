@@ -32,6 +32,33 @@ export class AuthService {
 
   constructor(private readonly storage: JsonStorageService) {}
 
+  private defaultUsers(): UserRow[] {
+    return Array.from({ length: 22 }, (_, index) => {
+      const number = index + 1;
+      const isAdmin = number <= 2;
+      return {
+        id: `user-${number}`,
+        name:
+          number === 1
+            ? "Admin"
+            : isAdmin
+              ? `Admin ${number}`
+              : `Employee ${number}`,
+        email: `employee${number}@example.com`,
+        role: isAdmin ? "admin" : "employee",
+        createdAt: new Date().toISOString(),
+      };
+    });
+  }
+
+  private defaultCredentials(users: UserRow[]): CredentialRow[] {
+    return users.map((user, index) => ({
+      userId: user.id,
+      username: user.email,
+      password: index < 2 ? "Admin@123" : "Employee@123",
+    }));
+  }
+
   isMockMode(): boolean {
     return !(this.secretKey && this.publishableKey);
   }
@@ -54,11 +81,12 @@ export class AuthService {
       );
     }
 
+    const defaultUsers = this.defaultUsers();
+    const users = await this.readJson<UserRow[]>("users.json", defaultUsers);
     const credentials = await this.readJson<CredentialRow[]>(
       "credentials.json",
-      [],
+      this.defaultCredentials(users),
     );
-    const users = await this.readJson<UserRow[]>("users.json", []);
 
     const match = credentials.find(
       (row) =>
@@ -99,8 +127,9 @@ export class AuthService {
   private async resolveMockUserByToken(
     token: string,
   ): Promise<RequestUser | null> {
+    const defaultUsers = this.defaultUsers();
     const sessions = await this.readJson<SessionRow[]>("sessions.json", []);
-    const users = await this.readJson<UserRow[]>("users.json", []);
+    const users = await this.readJson<UserRow[]>("users.json", defaultUsers);
     const session = sessions.find((row) => row.token === token);
 
     if (!session) {
